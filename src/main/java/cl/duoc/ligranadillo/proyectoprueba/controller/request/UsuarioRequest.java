@@ -1,14 +1,14 @@
 package cl.duoc.ligranadillo.proyectoprueba.controller.request;
 
-public class Usuario {
+public class UsuarioRequest {
     private String username;
     private String password;
     private String email;
 
-    public Usuario() {
+    public UsuarioRequest() {
     }
 
-    public Usuario(String username, String password, String email) {
+    public UsuarioRequest(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;

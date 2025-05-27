@@ -1,14 +1,14 @@
 package cl.duoc.ligranadillo.proyectoprueba.controller.request;
 
-public class Evaluacion {
+public class EvaluacionRequest {
     private String idUsuario;
     private String idPregunta;
     private String respuesta;
 
-    public Evaluacion() {
+    public EvaluacionRequest() {
     }
 
-    public Evaluacion(String idUsuario, String idPregunta, String respuesta) {
+    public EvaluacionRequest(String idUsuario, String idPregunta, String respuesta) {
         this.idUsuario = idUsuario;
         this.idPregunta = idPregunta;
         this.respuesta = respuesta;

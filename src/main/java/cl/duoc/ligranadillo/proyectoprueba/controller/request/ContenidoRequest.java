@@ -1,15 +1,15 @@
 package cl.duoc.ligranadillo.proyectoprueba.controller.request;
 
-public class Contenido {
+public class ContenidoRequest {
     private String titulo;
     private String descripcion;
     private String urlImagen;
     private String urlVideo;
 
-    public Contenido() {
+    public ContenidoRequest() {
     }
 
-    public Contenido(String titulo, String descripcion, String urlImagen, String urlVideo) {
+    public ContenidoRequest(String titulo, String descripcion, String urlImagen, String urlVideo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.urlImagen = urlImagen;

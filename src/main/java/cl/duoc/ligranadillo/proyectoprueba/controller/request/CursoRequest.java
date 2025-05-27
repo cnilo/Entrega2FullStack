@@ -1,15 +1,15 @@
 package cl.duoc.ligranadillo.proyectoprueba.controller.request;
 
-public class Curso {
+public class CursoRequest {
     private String nombre;
     private String descripcion;
     private String fechaInicio;
     private String fechaFin;
 
-    public Curso() {
+    public CursoRequest() {
     }
 
-    public Curso(String nombre, String descripcion, String fechaInicio, String fechaFin) {
+    public CursoRequest(String nombre, String descripcion, String fechaInicio, String fechaFin) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;

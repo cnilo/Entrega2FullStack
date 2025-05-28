@@ -37,4 +37,12 @@ public class RegisterRequest {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getValidationCode() {
+        return "1234"; // cambiar si tienes lógica real
+    }
+
+    public String getUserId() {
+        return username; // cambiar si tienes ID separado
+    }
 }

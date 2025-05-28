@@ -4,15 +4,9 @@ import lombok.Data;
 
 @Data
 public class User {
-    public class RegisterUserResult {
-        private Long userId;
-
-        public RegisterUserResult(Long userId) {
-            this.userId = userId;
-        }
-
-        public Long getUserId() {
-            return userId;
-        }
-    }
+    private String id;
+    private String username;
+    private String password;
+    private String email;
+    private boolean validated;
 }

@@ -2,28 +2,108 @@
 	"info": {
 		"_postman_id": "cae93bac-745a-4beb-962c-31d22ec759e5",
 		"name": "New Collection FullStack",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "43631321"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Apis Proyecto Entrega2",
+			"name": "Registrar usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users/register",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v1", "users", "register"]
+				},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"usuario1\",\n  \"password\": \"clave123\",\n  \"email\": \"usuario1@email.com\"\n}"
+				}
+			}
+		},
+		{
+			"name": "Login usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users/login",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v1", "users", "login"]
+				},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"usuario1\",\n  \"password\": \"clave123\"\n}"
+				}
+			}
+		},
+		{
+			"name": "Validar usuario",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users/validate/usuario1",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v1", "users", "validate", "usuario1"]
+				},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"usuario1\",\n  \"password\": \"clave123\",\n  \"email\": \"usuario1@email.com\"\n}"
+				}
+			}
+		},
+		{
+			"name": "Listar cursos",
 			"request": {
 				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "localhost:8080/cursos/listar",
-					"host": [
-						"localhost"
-					],
+					"raw": "http://localhost:8080/api/v2/cursos/listar",
+					"host": ["localhost"],
 					"port": "8080",
-					"path": [
-						"cursos",
-						"listar"
-					]
+					"path": ["api", "v2", "cursos", "listar"]
 				}
-			},
-			"response": []
+			}
+		},
+		{
+			"name": "Crear curso",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v2/cursos/crear",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v2", "cursos", "crear"]
+				},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Curso Java\",\n  \"descripcion\": \"Intro a Java\",\n  \"categoria\": \"Backend\",\n  \"fechaInicio\": \"2024-06-01\",\n  \"fechaFin\": \"2024-07-01\",\n  \"instructor\": \"Prof. Juan\"\n}"
+				}
+			}
 		}
 	]
 }

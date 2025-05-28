@@ -1,58 +1,55 @@
 package cl.duoc.ligranadillo.proyectoprueba.service;
 
-
-import cl.duoc.ligranadillo.proyectoprueba.repository.UserRepo;
-import cl.duoc.ligranadillo.proyectoprueba.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import cl.duoc.ligranadillo.proyectoprueba.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository repository;
+
+    private final Map<String, User> users = new HashMap<>();
+    private final Map<String, String> validationCodes = new HashMap<>();
 
     public RegisterUserResult registerUser(String username, String password, String email) {
-        UserRepo found = repository.getByUsernameOrEmail(username, email);
-        if (found != null) {
-            return new RegisterUserResult(-1, null);
+        if (users.containsKey(username)) {
+            throw new IllegalArgumentException("El usuario ya existe");
         }
-        String validationCode = UUID.randomUUID().toString();
-        int id = repository.save(username, password, email, validationCode);
-        return new RegisterUserResult(id, validationCode);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setValidated(false);
+
+        String userId = UUID.randomUUID().toString();
+        user.setId(userId);
+        users.put(username, user);
+
+        // Generar un código de validación ficticio
+        validationCodes.put(username, "1234");
+
+        return new RegisterUserResult(userId);
     }
 
     public boolean validateLogin(String username, String password) {
-        UserRepo found = repository.getByUsernameOrEmail(username, null);
-        if (found == null) {
-            return false;
-        }
-
-        if (!found.isValidated()) {
-            return false;
-        }
-
-        if (found.getPassword().equals(password)) {
-            return true;
-        }
-
-        return false;
+        User user = users.get(username);
+        return user != null && user.getPassword().equals(password) && user.isValidated();
     }
 
-    public boolean validateUser(
-            String username, @NotBlank(message = "Validation code is required") String validationCode) {
-        UserRepo found = repository.getByUsernameOrEmail(username, null);
-        if (found == null) {
-            return false;
-        }
+    public boolean validateUser(String username, String validationCode) {
+        if (!validationCodes.containsKey(username)) return false;
+        if (!validationCodes.get(username).equals(validationCode)) return false;
 
-        if (found.getValidationCode().equals(validationCode)) {
-            found.setValidated(true);
-            found.setValidationCode(null);
-            return true;
-        }
+        User user = users.get(username);
+        if (user == null) return false;
 
-        return false;
+        user.setValidated(true);
+        return true;
+    }
+
+    public User getUserByUsername(String username) {
+        return users.get(username);
     }
 }

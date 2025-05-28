@@ -3,17 +3,17 @@ package cl.duoc.ligranadillo.proyectoprueba.controller.request;
 public class ContenidoRequest {
     private String titulo;
     private String descripcion;
-    private String urlImagen;
-    private String urlVideo;
+    private String tipo;
+    private String url;
 
     public ContenidoRequest() {
     }
 
-    public ContenidoRequest(String titulo, String descripcion, String urlImagen, String urlVideo) {
+    public ContenidoRequest(String titulo, String descripcion, String tipo, String url) {
         this.titulo = titulo;
         this.descripcion = descripcion;
-        this.urlImagen = urlImagen;
-        this.urlVideo = urlVideo;
+        this.tipo = tipo;
+        this.url = url;
     }
 
     public String getTitulo() {
@@ -32,19 +32,19 @@ public class ContenidoRequest {
         this.descripcion = descripcion;
     }
 
-    public String getUrlImagen() {
-        return urlImagen;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setUrlImagen(String urlImagen) {
-        this.urlImagen = urlImagen;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public String getUrlVideo() {
-        return urlVideo;
+    public String getUrl() {
+        return url;
     }
 
-    public void setUrlVideo(String urlVideo) {
-        this.urlVideo = urlVideo;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

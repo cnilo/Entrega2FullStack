@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "cae93bac-745a-4beb-962c-31d22ec759e5",
+		"name": "New Collection FullStack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43631321"
+	},
+	"item": [
+		{
+			"name": "Apis Proyecto Entrega2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/cursos/listar",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cursos",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

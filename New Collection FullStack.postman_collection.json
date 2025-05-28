@@ -9,12 +9,7 @@
 			"name": "Registrar usuario",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
+				"header": [{ "key": "Content-Type", "value": "application/json" }],
 				"url": {
 					"raw": "http://localhost:8080/api/v1/users/register",
 					"host": ["localhost"],
@@ -31,12 +26,7 @@
 			"name": "Login usuario",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
+				"header": [{ "key": "Content-Type", "value": "application/json" }],
 				"url": {
 					"raw": "http://localhost:8080/api/v1/users/login",
 					"host": ["localhost"],
@@ -53,12 +43,7 @@
 			"name": "Validar usuario",
 			"request": {
 				"method": "PATCH",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
+				"header": [{ "key": "Content-Type", "value": "application/json" }],
 				"url": {
 					"raw": "http://localhost:8080/api/v1/users/validate/usuario1",
 					"host": ["localhost"],
@@ -87,12 +72,7 @@
 			"name": "Crear curso",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
+				"header": [{ "key": "Content-Type", "value": "application/json" }],
 				"url": {
 					"raw": "http://localhost:8080/api/v2/cursos/crear",
 					"host": ["localhost"],
@@ -102,6 +82,64 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"nombre\": \"Curso Java\",\n  \"descripcion\": \"Intro a Java\",\n  \"categoria\": \"Backend\",\n  \"fechaInicio\": \"2024-06-01\",\n  \"fechaFin\": \"2024-07-01\",\n  \"instructor\": \"Prof. Juan\"\n}"
+				}
+			}
+		},
+		{
+			"name": "Listar contenidos",
+			"request": {
+				"method": "GET",
+				"url": {
+					"raw": "http://localhost:8080/api/v3/contenidos/listar",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v3", "contenidos", "listar"]
+				}
+			}
+		},
+		{
+			"name": "Subir contenido",
+			"request": {
+				"method": "POST",
+				"header": [{ "key": "Content-Type", "value": "application/json" }],
+				"url": {
+					"raw": "http://localhost:8080/api/v3/contenidos/crear",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v3", "contenidos", "crear"]
+				},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"titulo\": \"Clase 1\",\n  \"descripcion\": \"Video introductorio\",\n  \"tipo\": \"video\",\n  \"url\": \"http://videoserver.com/clase1.mp4\"\n}"
+				}
+			}
+		},
+		{
+			"name": "Listar evaluaciones",
+			"request": {
+				"method": "GET",
+				"url": {
+					"raw": "http://localhost:8080/api/v4/evaluaciones/listar",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v4", "evaluaciones", "listar"]
+				}
+			}
+		},
+		{
+			"name": "Crear evaluación",
+			"request": {
+				"method": "POST",
+				"header": [{ "key": "Content-Type", "value": "application/json" }],
+				"url": {
+					"raw": "http://localhost:8080/api/v4/evaluaciones/crear",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v4", "evaluaciones", "crear"]
+				},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"titulo\": \"Prueba 1\",\n  \"tipo\": \"cuestionario\",\n  \"puntajeMaximo\": 100,\n  \"cursoId\": \"1\"\n}"
 				}
 			}
 		}

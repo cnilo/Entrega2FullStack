@@ -39,4 +39,7 @@ public class CursoService {
     public boolean eliminarCurso(Long id) {
         return cursos.remove(id) != null;
     }
+
+    public String agregarCurso(String java) {
+    }
 }

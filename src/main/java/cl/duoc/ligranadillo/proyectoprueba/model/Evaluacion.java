@@ -1,28 +1,35 @@
 package cl.duoc.ligranadillo.proyectoprueba.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Evaluación o prueba asignada a un curso")
+@NoArgsConstructor
+@Entity
+@Schema(description = "Entidad que representa una evaluación en el sistema")
 public class Evaluacion {
 
-    @Schema(description = "ID único de la evaluación", example = "5")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único de la evaluación", example = "1")
     private Long id;
 
-    @Schema(description = "Título de la evaluación", example = "Prueba Parcial Java")
+    @Schema(description = "Título de la evaluación", example = "Prueba Parcial de Java")
     private String titulo;
 
-    @Schema(description = "Tipo de evaluación (cuestionario, tarea, etc.)", example = "cuestionario")
+    @Schema(description = "Tipo de evaluación (por ejemplo: cuestionario, tarea)", example = "Cuestionario")
     private String tipo;
 
-    @Schema(description = "Puntaje máximo posible", example = "100")
+    @Schema(description = "Puntaje máximo alcanzable en la evaluación", example = "100")
     private int puntajeMaximo;
 
-    @Schema(description = "ID del curso al que pertenece la evaluación", example = "1")
+    @Schema(description = "Identificador del curso asociado", example = "3")
     private String cursoId;
 }

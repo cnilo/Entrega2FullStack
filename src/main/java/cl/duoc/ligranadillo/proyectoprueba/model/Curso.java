@@ -1,6 +1,5 @@
 package cl.duoc.ligranadillo.proyectoprueba.model;
 
-import cl.duoc.ligranadillo.proyectoprueba.repository.CursoRepository;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

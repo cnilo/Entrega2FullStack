@@ -13,24 +13,27 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v4/evaluaciones")
+@RequestMapping("/api/v2/evaluaciones")
 @Tag(name = "Evaluaciones", description = "Microservicio para gestión de evaluaciones")
 public class EvaluacionController {
 
+    private final EvaluacionService evaluacionService;
+
     @Autowired
-    private EvaluacionService evaluacionService;
+    public EvaluacionController(EvaluacionService evaluacionService) {
+        this.evaluacionService = evaluacionService;
+    }
 
     @PostMapping("/crear")
-    @Operation(summary = "Crear evaluación", description = "Registra una nueva evaluación asociada a un curso")
+    @Operation(summary = "Crear evaluación", description = "Registra una nueva evaluación")
     public ResponseEntity<Evaluacion> crearEvaluacion(@RequestBody Evaluacion evaluacion) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(evaluacionService.crearEvaluacion(evaluacion));
+        return ResponseEntity.status(HttpStatus.CREATED).body(evaluacionService.guardarEvaluacion(evaluacion));
     }
 
     @GetMapping("/listar")
     @Operation(summary = "Listar evaluaciones", description = "Obtiene todas las evaluaciones registradas")
     public ResponseEntity<List<Evaluacion>> listarEvaluaciones() {
-        return ResponseEntity.ok(evaluacionService.listarEvaluaciones());
+        return ResponseEntity.ok(evaluacionService.obtenerEvaluaciones());
     }
 
     @GetMapping("/{id}")
@@ -42,7 +45,7 @@ public class EvaluacionController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar evaluación", description = "Actualiza una evaluación existente según su ID")
+    @Operation(summary = "Actualizar evaluación", description = "Actualiza una evaluación existente")
     public ResponseEntity<Evaluacion> actualizarEvaluacion(@PathVariable Long id, @RequestBody Evaluacion evaluacion) {
         return evaluacionService.actualizarEvaluacion(id, evaluacion)
                 .map(ResponseEntity::ok)
@@ -50,7 +53,7 @@ public class EvaluacionController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar evaluación", description = "Elimina una evaluación existente por su ID")
+    @Operation(summary = "Eliminar evaluación", description = "Elimina una evaluación por ID")
     public ResponseEntity<Void> eliminarEvaluacion(@PathVariable Long id) {
         boolean eliminado = evaluacionService.eliminarEvaluacion(id);
         return eliminado ? ResponseEntity.noContent().build()

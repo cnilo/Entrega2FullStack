@@ -1,46 +1,60 @@
 package cl.duoc.ligranadillo.proyectoprueba.service;
 
 import cl.duoc.ligranadillo.proyectoprueba.model.User;
+import cl.duoc.ligranadillo.proyectoprueba.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
-    private final Map<String, User> users = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong();
+    private final UserRepository userRepository;
 
-    public User registerUser(User user) {
-        if (existeUsuario(user.getUsername())) {
-            throw new IllegalStateException("El username ya está registrado");
-        }
-        String id = String.valueOf(idGenerator.incrementAndGet());
-        user.setId(id);
-        user.setValidated(false);
-        users.put(user.getUsername(), user);
-        return user;
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public Optional<User> login(String username, String password) {
-        User user = users.get(username);
-        if (user != null && user.getPassword().equals(password) && user.isValidated()) {
-            return Optional.of(user);
-        }
-        return Optional.empty();
+    public User guardarUser(User user) {
+        return userRepository.save(user);
     }
 
-    public boolean validateUser(String username) {
-        User user = users.get(username);
-        if (user != null) {
-            user.setValidated(true);
+    public List<User> obtenerUsers() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> obtenerUserPorId(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public Optional<User> actualizarUser(Long id, User userActualizado) {
+        return userRepository.findById(id).map(userExistente -> {
+            userExistente.setNombre(userActualizado.getNombre());
+            userExistente.setPassword(userActualizado.getPassword());
+            userExistente.setEmail(userActualizado.getEmail());
+            userExistente.setValidated(userActualizado.isValidated());
+            return userRepository.save(userExistente);
+        });
+    }
+
+
+    public boolean eliminarUser(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public boolean existeUsuario(String username) {
-        return users.containsKey(username);
+    public Optional<User> login(String email, String password) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+            return userOpt;
+        }
+        return Optional.empty();
     }
+
 }

@@ -1,23 +1,31 @@
 package cl.duoc.ligranadillo.proyectoprueba.model;
 
+import cl.duoc.ligranadillo.proyectoprueba.repository.CursoRepository;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
 @Schema(description = "Entidad que representa un curso impartido por la plataforma")
 public class Curso {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "ID único del curso", example = "1")
     private Long id;
 
     @Schema(description = "Nombre del curso", example = "Java Básico")
     private String nombre;
 
-    @Schema(description = "Descripción del curso", example = "Curso introductorio a Java")
+    @Schema(description = "Descripción del curso", example = "Introducción a Java")
     private String descripcion;
 
     @Schema(description = "Categoría del curso", example = "Programación")

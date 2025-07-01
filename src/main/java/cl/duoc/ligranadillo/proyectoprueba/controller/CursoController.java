@@ -23,13 +23,14 @@ public class CursoController {
     @PostMapping("/crear")
     @Operation(summary = "Crear curso", description = "Registra un nuevo curso con sus atributos")
     public ResponseEntity<Curso> crearCurso(@RequestBody Curso curso) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(cursoService.crearCurso(curso));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(cursoService.guardarCurso(curso));
     }
 
     @GetMapping("/listar")
     @Operation(summary = "Listar cursos", description = "Obtiene todos los cursos registrados")
     public ResponseEntity<List<Curso>> listarCursos() {
-        return ResponseEntity.ok(cursoService.listarCursos());
+        return ResponseEntity.ok(cursoService.obtenerCursos());
     }
 
     @GetMapping("/{id}")

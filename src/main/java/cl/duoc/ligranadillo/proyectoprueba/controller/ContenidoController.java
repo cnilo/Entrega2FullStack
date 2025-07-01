@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v3/contenidos")
+@RequestMapping("/api/v2/contenidos")
 @Tag(name = "Contenidos", description = "Microservicio para gestión de contenidos")
 public class ContenidoController {
 
@@ -21,30 +21,30 @@ public class ContenidoController {
     private ContenidoService contenidoService;
 
     @PostMapping("/crear")
-    @Operation(summary = "Crear contenido", description = "Registra un nuevo contenido multimedia o recurso")
+    @Operation(summary = "Crear contenido", description = "Registra un nuevo contenido con sus atributos")
     public ResponseEntity<Contenido> crearContenido(@RequestBody Contenido contenido) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(contenidoService.crearContenido(contenido));
+        return ResponseEntity.status(HttpStatus.CREATED).body(contenidoService.guardarContenido(contenido));
     }
 
     @GetMapping("/listar")
     @Operation(summary = "Listar contenidos", description = "Obtiene todos los contenidos registrados")
     public ResponseEntity<List<Contenido>> listarContenidos() {
-        return ResponseEntity.ok(contenidoService.listarContenidos());
+        return ResponseEntity.ok(contenidoService.obtenerContenidos());
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener contenido por ID", description = "Retorna un contenido específico según su ID")
     public ResponseEntity<Contenido> obtenerContenido(@PathVariable Long id) {
-        return contenidoService.obtenerContenidoPorId(id)
-                .map(ResponseEntity::ok)
+        Optional<Contenido> contenido = contenidoService.obtenerContenidoPorId(id);
+        return contenido.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar contenido", description = "Actualiza un contenido existente según su ID")
     public ResponseEntity<Contenido> actualizarContenido(@PathVariable Long id, @RequestBody Contenido contenido) {
-        return contenidoService.actualizarContenido(id, contenido)
-                .map(ResponseEntity::ok)
+        Optional<Contenido> actualizado = contenidoService.actualizarContenido(id, contenido);
+        return actualizado.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 

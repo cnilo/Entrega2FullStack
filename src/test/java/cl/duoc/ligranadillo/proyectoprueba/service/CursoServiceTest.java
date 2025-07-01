@@ -1,8 +1,7 @@
-package cl.duoc.ligranadillo.proyectoprueba.controller;
+package cl.duoc.ligranadillo.proyectoprueba.service;
 
 import cl.duoc.ligranadillo.proyectoprueba.model.Curso;
 import cl.duoc.ligranadillo.proyectoprueba.repository.CursoRepository;
-import cl.duoc.ligranadillo.proyectoprueba.service.CursoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

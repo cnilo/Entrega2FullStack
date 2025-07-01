@@ -1,55 +1,51 @@
 package cl.duoc.ligranadillo.proyectoprueba.service;
 
 import cl.duoc.ligranadillo.proyectoprueba.model.Contenido;
+import cl.duoc.ligranadillo.proyectoprueba.repository.ContenidoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContenidoService {
 
-    private final Map<Long, Contenido> contenidos = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong();
+    private final ContenidoRepository contenidoRepository;
 
-    public Contenido crearContenido(Contenido contenido) {
-        if (existeContenidoPorTitulo(contenido.getTitulo())) {
-            throw new IllegalStateException("Ya existe un contenido con ese título");
-        }
-        return guardarContenido(contenido);
+    @Autowired
+    public ContenidoService(ContenidoRepository contenidoRepository) {
+        this.contenidoRepository = contenidoRepository;
     }
 
-    private Contenido guardarContenido(Contenido contenido) {
-        Long id = idGenerator.incrementAndGet();
-        contenido.setId(id);
-        contenidos.put(id, contenido);
-        return contenido;
+    public Contenido guardarContenido(Contenido contenido) {
+        return contenidoRepository.save(contenido);
     }
 
-    public List<Contenido> listarContenidos() {
-        return new ArrayList<>(contenidos.values());
-    }
-
-    private boolean existeContenidoPorTitulo(String titulo) {
-        return contenidos.values().stream()
-                .anyMatch(c -> c.getTitulo().equalsIgnoreCase(titulo));
+    public List<Contenido> obtenerContenidos() {
+        return contenidoRepository.findAll();
     }
 
     public Optional<Contenido> obtenerContenidoPorId(Long id) {
-        return Optional.ofNullable(contenidos.get(id));
+        return contenidoRepository.findById(id);
     }
 
     public Optional<Contenido> actualizarContenido(Long id, Contenido contenidoActualizado) {
-        if (contenidos.containsKey(id)) {
-            contenidoActualizado.setId(id);
-            contenidos.put(id, contenidoActualizado);
-            return Optional.of(contenidoActualizado);
-        }
-        return Optional.empty();
+        return contenidoRepository.findById(id).map(contenidoExistente -> {
+            contenidoExistente.setTitulo(contenidoActualizado.getTitulo());
+            contenidoExistente.setTipo(contenidoActualizado.getTipo());
+            contenidoExistente.setUrl(contenidoActualizado.getUrl());
+            contenidoExistente.setDescripcion(contenidoActualizado.getDescripcion());
+            return contenidoRepository.save(contenidoExistente);
+        });
     }
 
     public boolean eliminarContenido(Long id) {
-        return contenidos.remove(id) != null;
+        if (contenidoRepository.existsById(id)) {
+            contenidoRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
+

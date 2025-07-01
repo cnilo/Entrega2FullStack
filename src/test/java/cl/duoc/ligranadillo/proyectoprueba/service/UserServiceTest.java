@@ -1,7 +1,6 @@
-package cl.duoc.ligranadillo.proyectoprueba.controller;
+package cl.duoc.ligranadillo.proyectoprueba.service;
 
 import cl.duoc.ligranadillo.proyectoprueba.model.User;
-import cl.duoc.ligranadillo.proyectoprueba.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -12,14 +12,21 @@ public class EvaluacionService {
     private final Map<Long, Evaluacion> evaluaciones = new HashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
 
-    public Evaluacion guardarEvaluacion(Evaluacion evaluacion) {
+    public Evaluacion crearEvaluacion(Evaluacion evaluacion) {
+        if (evaluacion.getCursoId() == null) {
+            throw new IllegalArgumentException("cursoId no puede ser nulo");
+        }
+        return guardarEvaluacion(evaluacion);
+    }
+
+    private Evaluacion guardarEvaluacion(Evaluacion evaluacion) {
         Long id = idGenerator.incrementAndGet();
         evaluacion.setId(id);
         evaluaciones.put(id, evaluacion);
         return evaluacion;
     }
 
-    public List<Evaluacion> obtenerEvaluaciones() {
+    public List<Evaluacion> listarEvaluaciones() {
         return new ArrayList<>(evaluaciones.values());
     }
 

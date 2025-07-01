@@ -2,6 +2,8 @@ package cl.duoc.ligranadillo.proyectoprueba.controller;
 
 import cl.duoc.ligranadillo.proyectoprueba.model.Evaluacion;
 import cl.duoc.ligranadillo.proyectoprueba.service.EvaluacionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,38 +14,46 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v4/evaluaciones")
+@Tag(name = "Evaluaciones", description = "Microservicio para gestión de evaluaciones")
 public class EvaluacionController {
 
     @Autowired
     private EvaluacionService evaluacionService;
 
     @PostMapping("/crear")
+    @Operation(summary = "Crear evaluación", description = "Registra una nueva evaluación asociada a un curso")
     public ResponseEntity<Evaluacion> crearEvaluacion(@RequestBody Evaluacion evaluacion) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(evaluacionService.guardarEvaluacion(evaluacion));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(evaluacionService.crearEvaluacion(evaluacion));
     }
 
     @GetMapping("/listar")
+    @Operation(summary = "Listar evaluaciones", description = "Obtiene todas las evaluaciones registradas")
     public ResponseEntity<List<Evaluacion>> listarEvaluaciones() {
-        return ResponseEntity.ok(evaluacionService.obtenerEvaluaciones());
+        return ResponseEntity.ok(evaluacionService.listarEvaluaciones());
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener evaluación por ID", description = "Retorna una evaluación específica según su ID")
     public ResponseEntity<Evaluacion> obtenerEvaluacion(@PathVariable Long id) {
-        Optional<Evaluacion> evaluacion = evaluacionService.obtenerEvaluacionPorId(id);
-        return evaluacion.map(ResponseEntity::ok)
+        return evaluacionService.obtenerEvaluacionPorId(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar evaluación", description = "Actualiza una evaluación existente según su ID")
     public ResponseEntity<Evaluacion> actualizarEvaluacion(@PathVariable Long id, @RequestBody Evaluacion evaluacion) {
-        Optional<Evaluacion> actualizado = evaluacionService.actualizarEvaluacion(id, evaluacion);
-        return actualizado.map(ResponseEntity::ok)
+        return evaluacionService.actualizarEvaluacion(id, evaluacion)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar evaluación", description = "Elimina una evaluación existente por su ID")
     public ResponseEntity<Void> eliminarEvaluacion(@PathVariable Long id) {
         boolean eliminado = evaluacionService.eliminarEvaluacion(id);
-        return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return eliminado ? ResponseEntity.noContent().build()
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

@@ -1,48 +1,42 @@
 package cl.duoc.ligranadillo.proyectoprueba.controller;
 
-import cl.duoc.ligranadillo.proyectoprueba.controller.request.LoginRequest;
-import cl.duoc.ligranadillo.proyectoprueba.controller.request.RegisterRequest;
-import cl.duoc.ligranadillo.proyectoprueba.controller.response.LoginResponse;
-import cl.duoc.ligranadillo.proyectoprueba.controller.response.RegisterResponse;
-import cl.duoc.ligranadillo.proyectoprueba.service.RegisterUserResult;
+import cl.duoc.ligranadillo.proyectoprueba.model.User;
 import cl.duoc.ligranadillo.proyectoprueba.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Tag(name = "Usuarios", description = "Microservicio para gestión de usuarios y autenticación")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@Validated @RequestBody RegisterRequest request) {
-        RegisterUserResult result = userService.registerUser(request.getUsername(), request.getPassword(), request.getEmail());
-        RegisterResponse response = new RegisterResponse(result.getUserId(), "Usuario Registrado Exitosamente");
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @Operation(summary = "Registrar usuario", description = "Crea un nuevo usuario no validado")
+    public ResponseEntity<User> register(@RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(user));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Validated @RequestBody LoginRequest request) {
-        boolean validated = userService.validateLogin(request.getUsername(), request.getPassword());
-        if (validated) {
-            return ResponseEntity.ok(new LoginResponse("Login exitoso"));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("Usuario o contraseña inválidos"));
-        }
+    @Operation(summary = "Login de usuario", description = "Permite iniciar sesión con usuario y contraseña")
+    public ResponseEntity<User> login(@RequestParam String username,
+                                      @RequestParam String password) {
+        return userService.login(username, password)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @PatchMapping("/validate/{username}")
-    public ResponseEntity<LoginResponse> validate(@PathVariable String username, @Validated @RequestBody RegisterRequest request) {
-        boolean validated = userService.validateUser(username, request.getValidationCode());
-        if (validated) {
-            return ResponseEntity.ok(new LoginResponse("Usuario validado exitosamente"));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new LoginResponse("Error al validar el usuario"));
-        }
+    @Operation(summary = "Validar usuario", description = "Marca al usuario como validado")
+    public ResponseEntity<Void> validate(@PathVariable String username) {
+        boolean validated = userService.validateUser(username);
+        return validated ? ResponseEntity.noContent().build()
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

@@ -12,14 +12,21 @@ public class CursoService {
     private final Map<Long, Curso> cursos = new HashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
 
-    public Curso guardarCurso(Curso curso) {
+    public Curso crearCurso(Curso curso) {
+        if (existeCursoPorNombre(curso.getNombre())) {
+            throw new IllegalStateException("Ya existe un curso con ese nombre");
+        }
+        return guardarCurso(curso);
+    }
+
+    private Curso guardarCurso(Curso curso) {
         Long id = idGenerator.incrementAndGet();
         curso.setId(id);
         cursos.put(id, curso);
         return curso;
     }
 
-    public List<Curso> obtenerCursos() {
+    public List<Curso> listarCursos() {
         return new ArrayList<>(cursos.values());
     }
 
@@ -40,6 +47,8 @@ public class CursoService {
         return cursos.remove(id) != null;
     }
 
-    public String agregarCurso(String java) {
+    private boolean existeCursoPorNombre(String nombre) {
+        return cursos.values().stream()
+                .anyMatch(c -> c.getNombre().equalsIgnoreCase(nombre));
     }
 }

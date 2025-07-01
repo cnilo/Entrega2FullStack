@@ -6,21 +6,34 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+
 @Service
 public class ContenidoService {
 
     private final Map<Long, Contenido> contenidos = new HashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
 
-    public Contenido guardarContenido(Contenido contenido) {
+    public Contenido crearContenido(Contenido contenido) {
+        if (existeContenidoPorTitulo(contenido.getTitulo())) {
+            throw new IllegalStateException("Ya existe un contenido con ese título");
+        }
+        return guardarContenido(contenido);
+    }
+
+    private Contenido guardarContenido(Contenido contenido) {
         Long id = idGenerator.incrementAndGet();
         contenido.setId(id);
         contenidos.put(id, contenido);
         return contenido;
     }
 
-    public List<Contenido> obtenerContenidos() {
+    public List<Contenido> listarContenidos() {
         return new ArrayList<>(contenidos.values());
+    }
+
+    private boolean existeContenidoPorTitulo(String titulo) {
+        return contenidos.values().stream()
+                .anyMatch(c -> c.getTitulo().equalsIgnoreCase(titulo));
     }
 
     public Optional<Contenido> obtenerContenidoPorId(Long id) {
